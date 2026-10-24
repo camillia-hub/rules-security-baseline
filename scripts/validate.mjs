@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Validates that this rules pack follows the anti-collision placement
-// contract: hub.json declares the extension id, and every rule file is a
+// contract: extension.json declares the extension id, and every rule file is a
 // flat rules/cam-ext-<id>-<name>.md markdown document with a level-1
 // heading and at least 1 KB of content.
 // Zero dependencies; requires Node 22 or later.
@@ -21,19 +21,19 @@ function fail(message) {
 
 let hub;
 try {
-  hub = JSON.parse(await readFile(join(repoRoot, 'hub.json'), 'utf8'));
+  hub = JSON.parse(await readFile(join(repoRoot, 'extension.json'), 'utf8'));
 } catch {
-  fail('hub.json is missing or not valid JSON');
+  fail('extension.json is missing or not valid JSON');
 }
 const id = hub.id;
 if (typeof id !== 'string' || !KEBAB_ID.test(id)) {
-  fail("hub.json must declare a unique kebab-case extension 'id'");
+  fail("extension.json must declare a unique kebab-case extension 'id'");
 }
 if (hub.kind !== 'rules-pack') {
-  fail(`hub.json kind must be 'rules-pack' (found '${hub.kind}')`);
+  fail(`extension.json kind must be 'rules-pack' (found '${hub.kind}')`);
 }
 if (hub.contentDir !== 'rules') {
-  fail(`hub.json contentDir must be 'rules' (found '${hub.contentDir}')`);
+  fail(`extension.json contentDir must be 'rules' (found '${hub.contentDir}')`);
 }
 
 let entries;
